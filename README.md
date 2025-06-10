@@ -22,7 +22,7 @@ LLM-Driven Image Analysis Framework
 Clone this repository and install the required dependencies:
 
 ```bash
-git clone https://github.com/yourusername/llm-driven-image-analysis-framework.git
+git clone https://github.com/tremartian/llm-driven-image-analysis-framework.git
 cd llm-driven-image-analysis-framework
 pip install -r requirements.txt
 ```
