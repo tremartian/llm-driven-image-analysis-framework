@@ -1,4 +1,4 @@
-# -llm-driven-image-analysis-framework
+# llm-driven-image-analysis-framework
 LLM-Driven Image Analysis Framework
 
 
