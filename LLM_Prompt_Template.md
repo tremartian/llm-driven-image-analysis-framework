@@ -22,26 +22,26 @@ Example structure for JSON:
       "max": <MAX_VALUE>,
       "step": <STEP_VALUE>,
       "ui": "<UI_TYPE>",
-      "adjustment" "<CONTROL_NAME_IN_PY>"
+      "adjustment": "<CONTROL_NAME_IN_PY>"
     }
   "example_dropdown": {
       "type": "string",
       "default": "option1",
       "options": ["option1", "option2", "option3"],
       "ui": "dropdown",
-      "adjustment" "<CONTROL_NAME_IN_PY>"
+      "adjustment": "<CONTROL_NAME_IN_PY>"
 
     },
     "example_tickbox": {
       "type": "boolean",
       "default": true,
       "ui": "tickbox",
-      "adjustment" "<CONTROL_NAME_IN_PY>"
+      "adjustment": "<CONTROL_NAME_IN_PY>"
     },
     "example_button": {
       "default": 0,
       "ui": "button",
-      "adjustment" "<CONTROL_NAME_IN_PY>"
+      "adjustment": "<CONTROL_NAME_IN_PY>"
     }
     ... (additional parameters as needed)
   }
@@ -73,22 +73,22 @@ In case of multiple parameters, the parameters in the list are in the same order
 
     return processed_image  # Return the processed image in Pillow format
 
-**User Input Section for Specific Module Details:**
-•	**Module Name and Description:** Contour detection, and count contoured objects
-•	**Additional information:** I want have selectors for all possible options
+********************************************************************
+*** USER INPUT SECTION FOR SPECIFIC MODULE DETAILS: ***
+•	MODULE NAME AND DESCRIPTION: Contour detection, and count contoured objects
+•	ADDITIONAL INFORMATION: I want have selectors for all possible options
+********************************************************************
+
 Integration and Testing Instructions:
 •	The code must integrate seamlessly with the existing system, ensuring full functionality from the UI to data processing.
 •	All parameters should be dynamically adjustable through the UI, allowing real-time updates to the processing output as user inputs change.
 •	Needed conversions should be taken care for methods. For example, if grayscale image is needed.
+
 Reminder for Quality Assurance:
 •	Strictly adhere to the defined JSON structure and Python coding standards to ensure compatibility with the existing framework.
 •	Ensure easy updates and modifications to support future enhancements without extensive redevelopment.
 •	If additional libraries are used, call them and use them correctly.
 
-•	Use the templates provide to give contents for methods.json and methdos.py for requested processing
+•	Use the templates provide to give contents for methods.json and methods.py for requested processing
 •	Give full code for the function.
-•	Provide only one function to process image. 
-
-
-
-
+•	Provide only one function to process image.
