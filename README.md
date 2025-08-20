@@ -1,87 +1,78 @@
-# llm-driven-image-analysis-framework
-LLM-Driven Image Analysis Framework
+# LLM-Driven Image Analysis Framework
 
+A modular, Python-based framework for quickly building custom image-analysis pipelines with help from Large Language Models (LLMs). The system uses a two-stage workflow:
 
-**LLM-Driven Image Analysis Framework** is a modular, Python-based tool designed to facilitate the rapid development of customized image analysis workflows. It leverages large language models (LLMs) to automatically generate both user interfaces and backend code, simplifying the creation of analysis modules for domain experts with limited programming expertise. The framework supports the integration of diverse image processing methods and allows researchers to build and test tailored analysis pipelines with minimal coding overhead.
+- **Stage 1 — Plan (no code):** propose a short, practical pipeline (3–6 steps) for a specific task.  
+- **Stage 2 — Generate (code):** for each step, generate a module (Python + JSON UI) and chain them in the GUI; export a runnable script.  
 
----
-
-## Features
-
-* **Modular Design:** Supports easy integration of new image processing modules.
-* **LLM-Generated Code:** Automatically generates functional Python code and JSON-based user interface definitions from structured prompts.
-* **Customizable Workflows:** Enables users to define workflows without extensive programming.
-* **Support for Multiple Domains:** Initially tested with grain analysis and plywood detection, but adaptable to other scientific and industrial contexts.
-* **Graphical User Interface:** Built with Tkinter for parameter selection, method chaining, and image visualization.
-* **Data Analysis Support:** Integrated CSV export and basic statistical visualization (e.g., histograms).
+Designed for domain experts who need working tools without deep programming.
 
 ---
 
-## Installation
+## Two-Stage Workflow
 
-Clone this repository and install the required dependencies:
+### Stage 1 — Pipeline planning (no code)
 
-```bash
-git clone https://github.com/tremartian/llm-driven-image-analysis-framework.git
-cd llm-driven-image-analysis-framework
-pip install -r requirements.txt
-```
+Use this prompt to get a concise, classical-CV-first plan:
 
----
+**Stage-1: Pipeline Planner Prompt**
 
-## Usage
+You are an image-analysis expert. 
+I am using a python framework to generate image analysis workflow that consists of layered process of using various methods.
+I am asking for a pipeline for it. Propose a short, practical workflow to achieve the goal (no code). Keep it to 1–4 steps. Prefer classical computer-vision methods; if deep learning is clearly better, say so and why. For each step, give:
+- Step name and one-line purpose
+- Input → Output (what it expects, what it produces)
+- 1–2 key tunables (e.g., kernel size, threshold)
+End with:
+- Quick validation plan (what to check, simple metric/target)
+- Common pitfalls & fixes (very brief)
 
-1. **Start the Application:**
 
-   ```bash
-   python A_Main.py
-   ```
-
-2. **Load an Image:**
-
-   * Select an image file for analysis using the GUI.
-
-3. **Choose a Processing Method:**
-
-   * Select available image processing methods (e.g., Brightness Adjustment, Segmentation).
-   * Adjust parameters using the interactive sliders and dropdowns.
-
-4. **Run Analysis:**
-
-   * View processed images and intermediate results.
-   * Optionally export analysis results to a CSV file.
-
-5. **Analyze Results:**
-
-   * Navigate to the **Results** tab.
-   * Zoom in/out of images and visualize statistical data from CSV exports.
+Suggest an image analysis pipeline for plywood knot detection and counting. 
 
 ---
 
-## Framework Structure
+### Stage 2 — Module generation (code)
 
-* `methods/`: Contains modular Python functions for image processing.
-* `config/`: JSON configurations for UI and processing methods.
-* `SharedState.py`: Manages shared state between tabs and methods.
-* `A_Main.py`: Main application entry point.
-* `Tabs/`: Contains individual tabs (methods, results) for GUI integration.
+For each planned step, use the Module Generator prompt (Stage-2_Processing Module_LLM_Prompt_Template.txt) to produce:
+
+- a Python function (in `config/methods.py`)  
+- a JSON UI schema (in `config/methods.json`)  
+
+Then modules are shown and run in the GUI according to the order in the methods.json → test → tune parameters → test..
+
+---
+
+## Quick Start (PyCharm)
+
+1. Open the project for example with Pycharm.
+2. Set the interpreter (any Python 3.x you already use).  
+3. Run `A_Main.py`.  
+4. Load an image → adjust parameters for each module until satisfactory results.
+5. Export the pipeline (JSON) and Generate Script (single `.py`) for headless/embedded use.  
+
+---
+
+## Typical Flow for Tailored Image Analysis Pipeline
+
+1. Plan a workflow (Stage-1 prompt).  
+2. Generate each module (Stage-2 prompt) → copy JSON to `config/methods.json`, Python to `config/methods.py`.  
+3. Modules are chained in the GUI; use UI to tune parameters.  
+(4. Export the pipeline JSON and Generate Script with using LLM (single `.py`). )
 
 ---
 
 ## Contributing
 
-Contributions are welcome! Please open issues or pull requests for:
-
-* New image processing modules.
-* Enhancements to the user interface.
-* Additional test cases or documentation improvements.
-
----
-
-## License
-
-This project is released under the MIT License. See the [LICENSE](LICENSE) file for details.
+PRs welcome for:
+- New modules (with matching JSON UI),
+- UI/UX improvements,
+- Sample pipelines and datasets,
+- Documentation tweaks.
 
 ---
 
+## Citation
+If this framework helps your work, please cite:
 
+LLM-Assisted Workflow Generation for Low-Cost Visual Inspection and Image Analysis (Updated with venue when available)
