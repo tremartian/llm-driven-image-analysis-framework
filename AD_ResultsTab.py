@@ -3,6 +3,7 @@ from tkinter import ttk, filedialog, messagebox
 from PIL import Image, ImageTk
 import matplotlib.pyplot as plt
 import pandas as pd
+import json, datetime, os
 
 def create_results_tab(parent, shared_state):
     tab = ttk.Frame(parent)
@@ -112,4 +113,31 @@ def create_results_tab(parent, shared_state):
 
     ttk.Button(tab, text="Select and Analyze CSV File", command=analyze_csv).pack(pady=5)
 
+    def export_pipeline_json():
+        payload = {
+            "version": "0.1",
+            "timestamp": datetime.datetime.now().isoformat(timespec="seconds"),
+            "pipeline_order": getattr(shared_state, "pipeline_order", []),
+            "params": getattr(shared_state, "params", {}),
+            "io": getattr(shared_state, "io_spec", {})
+        }
+        fpath = filedialog.asksaveasfilename(
+            defaultextension=".json",
+            filetypes=[("JSON files", "*.json")],
+            initialfile="pipeline_params.json",
+            title="Save pipeline as JSON"
+        )
+        if not fpath:
+            return
+        with open(fpath, "w", encoding="utf-8") as f:
+            json.dump(payload, f, indent=2)
+        messagebox.showinfo("Export", f"Saved: {os.path.basename(fpath)}")
+
+    ttk.Button(tab, text="Export pipeline (JSON)", command=export_pipeline_json).pack(pady=5)
+
+
     return tab
+
+
+
+
