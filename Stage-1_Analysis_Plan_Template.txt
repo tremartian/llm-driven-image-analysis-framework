@@ -1,0 +1,12 @@
+You are an image-analysis expert. 
+I am using a python framework to generate image analysis workflow that consists of layered process of using various methods.
+I am asking for a pipeline for it. Propose a short, practical workflow to achieve the goal (no code). Keep it to 1–4 steps. Prefer classical computer-vision methods; if deep learning is clearly better, say so and why. For each step, give:
+- Step name and one-line purpose
+- Input → Output (what it expects, what it produces)
+- 1–2 key tunables (e.g., kernel size, threshold)
+End with:
+- Quick validation plan (what to check, simple metric/target)
+- Common pitfalls & fixes (very brief)
+
+
+Suggest an image analysis pipeline for plywood knot detection and counting
