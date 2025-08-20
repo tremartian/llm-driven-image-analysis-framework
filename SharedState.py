@@ -16,6 +16,17 @@ class SharedState:
         self.allMethods = []  # List to store all added methods
         self.selectedMethod = {}
         self.real_time_updates = tk.BooleanVar(value=True)  # BooleanVar to track real-time updates, default is True
+        # added for analysis pipeline export:
+        self.params = {}  # {module_name: {param: value}}
+        self.pipeline_order = []  # ["grayscale", "adaptive_threshold", ...]
+        self.io_spec = {}  # {"input": {...}, "output": {...}}
+
+
+    def set_param(self, module, key, value):
+        self.params.setdefault(module, {})[key] = value
+
+    def get_params(self, module):
+        return self.params.get(module, {})
 
 
     # FOR IMAGES
