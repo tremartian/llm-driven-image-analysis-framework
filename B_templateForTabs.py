@@ -8,6 +8,7 @@ def create_tab(parent, method_config, shared_state):
     ttk.Label(tab, text=f"Method: {method_config['name']}", font=('Arial', 16)).pack()
 
     shared_state.add_to_allMethods(method_config['name'])
+    shared_state.pipeline_order = [m for m in shared_state.get_allMethods() if m != "original image"]
     all_methods = shared_state.get_allMethods()
     current_method_index = all_methods.index(method_config['name'])
 
@@ -79,6 +80,7 @@ def create_tab(parent, method_config, shared_state):
         if uiType == "slider":
             control = ttk.Scale(scrollable_frame, from_=config['min'], to=config['max'], orient='horizontal')
             control.set(config['default'])
+            shared_state.set_param(method_config["name"], param, float(config['default']))
             control.pack()
             value_label = ttk.Label(scrollable_frame, text=str(control.get()))
             value_label.pack(side='left')
@@ -108,6 +110,7 @@ def create_tab(parent, method_config, shared_state):
 
 def create_tickbox(settings_frame, shared_state, method_config, param, config):
     tick_state = tk.BooleanVar(value=bool(config['default']))
+    shared_state.set_param(method_config["name"], param, bool(config['default']))
     control = ttk.Checkbutton(settings_frame, text=param.capitalize(), variable=tick_state)
     control.pack()
 
@@ -120,20 +123,22 @@ def tickbox_update(tick_state, shared_state, method_name, parameter_name):
     checked = tick_state.get()
     shared_state.update_selected_value(method_name, parameter_name, checked)
     print(f"Tickbox Updated - Method: {method_name}, Parameter: {parameter_name}, State: {'Enabled' if checked else 'Disabled'}")
+    shared_state.set_param(method_name, parameter_name, checked)  # NEW
 
 
 def create_dropdown(settings_frame, shared_state, method_config, param, config):
     selected_option = tk.StringVar(value=config['default'])
+    shared_state.set_param(method_config["name"], param, config['default'])
     dropdown = ttk.OptionMenu(settings_frame, selected_option, config['default'], *config['options'])
     dropdown.pack()
     # Bind the OptionMenu selection to a function that processes changes
     selected_option.trace('w', lambda *args: dropdown_update(selected_option, shared_state, method_config['name'], param))
     return dropdown
 
-def tickbox_update(tick_state, shared_state, method_name, parameter_name):
-    checked = tick_state.get()
-    shared_state.update_selected_value(method_name, parameter_name, checked)
-    print(f"Tickbox Updated - Method: {method_name}, Parameter: {parameter_name}, State: {'Enabled' if checked else 'Disabled'}")
+def dropdown_update(selected_option, shared_state, method_name, parameter_name):
+    val = selected_option.get()
+    shared_state.update_selected_value(method_name, parameter_name, val)
+    shared_state.set_param(method_name, parameter_name, val)       # NEW
 
 
 def set_to_default(label, control, default_value, shared_state, param, method_config):
@@ -144,6 +149,7 @@ def set_to_default(label, control, default_value, shared_state, param, method_co
     print(f"Default Button - Parameter: {param}, Value: {control.get()}, Shared State Path: {method_config['name']} -> {param}")
     print("Current Slider Value:", control.get())
     label.config(text="{:.2f}".format(control.get()))  # Format the slider's value to two decimal places
+    shared_state.set_param(method_config["name"], param, float(default_value))
 
 def slider_update(event, control, param, shared_state, method_config, left_img_label, right_img_label, sourceImage, label):
     print("sourceImage: " + sourceImage)
@@ -151,6 +157,9 @@ def slider_update(event, control, param, shared_state, method_config, left_img_l
     print("Current Slider Value:", control.get())
     # Update the selected value in SharedState
     shared_state.update_selected_value(method_name=method_config["name"], parameter_name=param, value=control.get())
+
+    # also persist into canonical params (typed)
+    shared_state.set_param(method_config["name"], param, float(control.get()))
 
     # Update the label text to display the current slider value
     label.config(text="{:.2f}".format(control.get())) # Format the slider's value to two decimal places
